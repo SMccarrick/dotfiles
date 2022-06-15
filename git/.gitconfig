@@ -1,0 +1,14 @@
+[init]
+        defaultBranch = main
+[user]
+        name = SMccarrick
+        email = smccarrick2804@gmail.com
+[alias]
+    b = branch
+    ph = push
+    pl = pull
+    c = commit
+    co = checkout
+    cob = checkout -b
+    s = status
+    l = log --pretty=format:'%C(yellow)%h%C(reset)%C(auto)%d%C(reset) %s %C(cyan)[%cn]%C(reset)' --decorate --date=short --graph
