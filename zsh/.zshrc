@@ -70,7 +70,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git  zsh-autosuggestions)
+plugins=(git zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -101,3 +101,20 @@ alias zshconfig="mate ~/.zshrc"
 
 eval "$(starship init zsh)"
 eval "$(fnm env --use-on-cd)"
+
+# Checks out PR
+# Checks if we have the repo locally. If not its clones it and generates .npmrc file
+# We then cd into the repo and run the required yarn commands to get the work running locally
+function review-checkout() {
+ gh pr checkout $1
+ repo=$(gh pr view $1 --json repository -q '.repository.name')
+ if [ ! -d "~/projects/$repo" ]; then
+ git clone https://github.com/username/$repo.git ~/projects/$repo
+ echo "//npm.pkg.github.com/:_authToken=TOKEN" > ~/projects/$repo/.npmrc
+ echo "@OWNER:registry=https://npm.pkg.github.com" >> ~/projects/$repo/.npmrc
+ fi
+ cd ~/projects/$repo
+ yarn && yarn build && yarn start
+}
+
+
